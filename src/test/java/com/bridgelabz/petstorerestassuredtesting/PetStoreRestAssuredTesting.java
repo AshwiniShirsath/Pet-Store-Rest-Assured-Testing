@@ -1,8 +1,6 @@
 package com.bridgelabz.petstorerestassuredtesting;
 
 import io.restassured.response.Response;
-import org.apache.http.HttpResponse;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.given;
@@ -10,53 +8,103 @@ import static io.restassured.RestAssured.given;
 public class PetStoreRestAssuredTesting {
 
     @Test(priority = 0)
-    public void aPlaceAnOrderOfPet() {
+    public void addPet() {
         Response response = given()
                 .accept("application/json")
                 .contentType("application/json")
                 .body("{\n" +
                         "        \"id\": 0,\n" +
-                        "        \"petId\":9,\n" +
-                        "        \"quantity\": 5,\n" +
-                        "        \"shipDate\": \"2022-08-23T07:55:34.195Z\",\n" +
-                        "        \"status\": \"placed\",\n" +
-                        "        \"complete\": true\n" +
-                        "        }")
+                        "        \"category\": {\n" +
+                        "        \"id\": 0,\n" +
+                        "        \"name\": \"Kutta\"\n" +
+                        "        },\n" +
+                        "        \"name\": \"doggie\",\n" +
+                        "        \"photoUrls\": [\n" +
+                        "        \"https://m.facebook.com/Billi-Meow-103296698627401/photos/?ref=page_internal\"\n" +
+                        "        ],\n" +
+                        "        \"tags\": [\n" +
+                        "        {\n" +
+                        "        \"id\": 0,\n" +
+                        "        \"name\": \"Billi\"\n" +
+                        "        }\n" +
+                        "        ],\n" +
+                        "        \"status\": \"available\"\n" +
+                        "        }\n")
                 .when()
-                .post("https://petstore.swagger.io/v2/store/order");
-        response.prettyPrint();
-        response.then().assertThat().statusCode(200);
-    }
-
-    @Test(priority = 1)
-    public void bFindPurchagedOrderById() {
-        Response response = given()
-                .accept("application/json")
-                .contentType("application/json")
-                .when()
-                .get("https://petstore.swagger.io/v2/store/order/88230623");
+                .post("https://petstore.swagger.io/v2/pet");
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
     }
 
     @Test(priority = 2)
-    public void cReturnPetInventriesByStatus() {
+    public void cUpdateExistingPet() {
         Response response = given()
                 .accept("application/json")
                 .contentType("application/json")
+                .body("{\n" +
+                        "  \"id\": 0,\n" +
+                        "  \"category\": {\n" +
+                        "    \"id\": 0,\n" +
+                        "    \"name\": \"pagal\"\n" +
+                        "  },\n" +
+                        "  \"name\": \"doggie\",\n" +
+                        "  \"photoUrls\": [\n" +
+                        "    \"string\"\n" +
+                        "  ],\n" +
+                        "  \"tags\": [\n" +
+                        "    {\n" +
+                        "      \"id\": 0,\n" +
+                        "      \"name\": \"billi\"\n" +
+                        "    }\n" +
+                        "  ],\n" +
+                        "  \"status\": \"available\"\n" +
+                        "}")
                 .when()
-                .get("https://petstore.swagger.io/v2/store/inventory");
+                .put("https://petstore.swagger.io/v2/pet");
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
     }
 
     @Test(priority = 3)
-    public void deleteOrder() {
+    public void dFindPetsByStatus() {
         Response response = given()
                 .accept("application/json")
                 .contentType("application/json")
                 .when()
-                .delete("https://petstore.swagger.io/v2/store/order/88230623");
+                .get("https://petstore.swagger.io/v2/pet/findByStatus?status=available");
+        response.prettyPrint();
+        response.then().assertThat().statusCode(200);
+    }
+
+    @Test(priority = 4)
+    public void eFindPetsById() {
+        Response response = given()
+                .accept("application/json")
+                .contentType("application/json")
+                .when()
+                .get("https://petstore.swagger.io/v2/pet/3");
+        response.prettyPrint();
+        response.then().assertThat().statusCode(200);
+    }
+
+    @Test(priority = 5)
+    public void fUpdatePetWithFormData() {
+        Response response = given()
+                .accept("application/json")
+                .contentType("application/json")
+                .when()
+                .get("https://petstore.swagger.io/v2/pet/3");
+        response.prettyPrint();
+        response.then().assertThat().statusCode(200);
+    }
+
+    @Test(priority = 6)
+    public void gDeletePet() {
+        Response response = given()
+                .accept("application/json")
+                .contentType("application/json")
+                .when()
+                .get("https://petstore.swagger.io/v2/pet/3");
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
     }
