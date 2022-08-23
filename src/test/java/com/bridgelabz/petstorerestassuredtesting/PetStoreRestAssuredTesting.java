@@ -140,7 +140,6 @@ public class PetStoreRestAssuredTesting {
         response.then().assertThat().statusCode(200);
     }
 
-    
 
 }
 
