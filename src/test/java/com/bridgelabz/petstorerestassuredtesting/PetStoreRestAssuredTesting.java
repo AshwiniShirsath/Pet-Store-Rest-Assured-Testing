@@ -8,6 +8,7 @@ import org.testng.annotations.Test;
 import static io.restassured.RestAssured.given;
 
 public class PetStoreRestAssuredTesting {
+    long id;
 
     @Test(priority = 0)
     public void aPlaceAnOrderOfPet() {
@@ -25,6 +26,7 @@ public class PetStoreRestAssuredTesting {
                 .when()
                 .post("https://petstore.swagger.io/v2/store/order");
         response.prettyPrint();
+        id = response.path("id");
         response.then().assertThat().statusCode(200);
     }
 
@@ -34,7 +36,7 @@ public class PetStoreRestAssuredTesting {
                 .accept("application/json")
                 .contentType("application/json")
                 .when()
-                .get("https://petstore.swagger.io/v2/store/order/88230623");
+                .get("https://petstore.swagger.io/v2/store/order/"+id);
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
     }
@@ -56,7 +58,7 @@ public class PetStoreRestAssuredTesting {
                 .accept("application/json")
                 .contentType("application/json")
                 .when()
-                .delete("https://petstore.swagger.io/v2/store/order/88230623");
+                .delete("https://petstore.swagger.io/v2/store/order/"+id);
         response.prettyPrint();
         response.then().assertThat().statusCode(200);
     }
